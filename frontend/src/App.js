@@ -6,6 +6,7 @@ import Home from './components/Home';
 import Login from './components/Login';
 import Register from './components/Register';
 import Whisper from './components/Whisper';
+import './App.css';
 
 const App = () => {
   return (

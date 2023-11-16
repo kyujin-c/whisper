@@ -55,7 +55,8 @@ const Login = () => {
         </label>
         <br />
         <button type="button" onClick={handleLogin}>Login</button>
-        <a href="/register">계정이 없으신가요? 회원가입하기</a>
+        <p> 계정이 없으신가요?</p>
+        <a href="/register"> 회원가입하기</a>
 
         {/* Display error message if login fails */}
         {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
