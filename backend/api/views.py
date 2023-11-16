@@ -19,15 +19,15 @@ def api_login(request):
     if request.method == 'POST':
         username = request.data.get('username')
         password = request.data.get('password')
+        print(f'Username: {username}, Password: {password}')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return JsonResponse({'success': True}, status=200)
+        else:
+            return JsonResponse({'success': False}, status=401)
     else:
         return HttpResponse(status=405)  # Method Not Allowed
-
-    user = authenticate(request, username=username, password=password)
-    if user is not None:
-        login(request, user)
-        return JsonResponse({'success': True}, status=200)
-    else:
-        return JsonResponse({'success': False}, status=200) 
     
 
 @api_view(['POST'])

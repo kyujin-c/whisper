@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
 
 const RegistrationForm = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     username: '',
@@ -31,18 +33,23 @@ const RegistrationForm = () => {
 
       // Handle successful registration (redirect, show success message, etc.)
       //console.log(response.data);
+      navigate('/')
     } catch (error) {
       // Handle validation errors
       if (error.response && error.response.status === 400) {
         const errors = error.response.data.errors;
-        console.log(errors.password)
         if (errors.password) {
+          console.log(errors.password)
           setModalMessage("password");
           setShowModal(true);
-        } else if (errors.email) {
+        } 
+        if (errors.email) {
+          console.log(errors.email)
           setModalMessage("email");
           setShowModal(true);
-        } else if (errors.username) {
+        } 
+        if (errors.username) {
+          console.log(errors.username)
           setModalMessage("username");
           setShowModal(true);
         }
