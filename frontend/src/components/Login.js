@@ -1,13 +1,13 @@
 // Login.js
 
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
   const handleUsernameChange = (event) => {
@@ -24,19 +24,20 @@ const Login = () => {
       password: password,
     };
 
-    axios.post('http://127.0.0.1:8000/login/', requestData)
+    axios
+      .post("http://127.0.0.1:8000/login/", requestData)
       .then((response) => {
         console.log(response.data);
         if (response.data.success) {
           // If login is successful, navigate to the Whisper page
-          navigate('/whisper');
+          navigate("/whisper");
         } else {
           // If login fails, set an error message
-          alert('Incorrect username or password');
+          alert("Incorrect username or password");
         }
       })
       .catch((error) => {
-        console.error('Login error:', error);
+        console.error("Login error:", error);
       });
   };
 
@@ -51,15 +52,21 @@ const Login = () => {
         <br />
         <label>
           Password:
-          <input type="password" value={password} onChange={handlePasswordChange} />
+          <input
+            type="password"
+            value={password}
+            onChange={handlePasswordChange}
+          />
         </label>
         <br />
-        <button type="button" onClick={handleLogin}>Login</button>
+        <button type="button" onClick={handleLogin}>
+          Login
+        </button>
         <p> 계정이 없으신가요?</p>
         <a href="/register"> 회원가입하기</a>
 
         {/* Display error message if login fails */}
-        {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+        {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
       </form>
     </div>
   );
