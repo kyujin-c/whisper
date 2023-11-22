@@ -109,3 +109,41 @@
   color: white;
   transition: 0.3s;
 }
+
+.whisper-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+.language-section {
+  align-self: flex-end;
+  margin-bottom: 10px;
+}
+
+.file-upload-section {
+  align-self: flex-end;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.file-upload-section label {
+  margin-right: 10px;
+}
+
+.recording-section {
+  align-self: flex-start;
+  margin-bottom: 10px;
+}
+
+.transcript-section {
+  margin-top: 10px;
+}
+
+.logout-section {
+  align-self: flex-start;
+  margin-top: 10px;
+}

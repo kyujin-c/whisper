@@ -9,7 +9,7 @@ const Home = () => {
       <h2>Welcome to the Home Page</h2>
       {/* Add content and components for the home page */}
 
-      <Link to="/login">여기 로그인 페이지로 가 </Link>
+      <Link to="/login">로그인하기 </Link>
     </div>
   );
 };

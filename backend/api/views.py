@@ -4,6 +4,8 @@ from .serializers import CustomUserSerializer
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
+from rest_framework.views import APIView
+from rest_framework.parsers import MultiPartParser
 from django.http import HttpResponse, JsonResponse
 from rest_framework.exceptions import ValidationError
 from .models import CustomUser
@@ -13,6 +15,7 @@ import numpy as np
 import os
 import wave
 
+## api_login checks it the credentials posted from frontend matches any credentials in database and authorizes use login.
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def api_login(request):
@@ -29,11 +32,14 @@ def api_login(request):
     else:
         return HttpResponse(status=405)  # Method Not Allowed
 
+
+## api_logout allows user to logout from the application.
 @api_view(['POST'])
 def api_logout(request):
     logout(request)
     return Response({'message': 'Logout successful'}, status=status.HTTP_200_OK)
 
+## api_register allows user to register to the application.
 @api_view(['POST', 'GET'])
 @permission_classes([AllowAny])
 def api_register(request):
@@ -51,6 +57,8 @@ def api_register(request):
     else:
         return Response({'message': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
+
+## check_unique_username check if the username input is unique in the database.
 @api_view(['POST', 'GET'])
 @permission_classes([AllowAny])
 def check_unique_username(request):
@@ -59,12 +67,30 @@ def check_unique_username(request):
     return JsonResponse({'is_unique': is_unique})
 
 AUDIO_FOLDER = '/Users/kyujincho/lang_ko/backend/recorded_audio/'
+file_path = '/Users/kyujincho/lang_ko/backend/recorded_audio/'
 
+language = 'ko'
+
+## update_language updates the language that whisper will be using for transcription. 
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def update_language(request):
+    global language
+    if request.method == 'POST':
+        language = request.data.get('language')
+        if language:
+            return JsonResponse({'success': True}, status=200)
+        else:
+            return JsonResponse({'success': False}, status=401)
+    else: 
+        return HttpResponse(status=405)  # Method Not Allowed
+    
+## transcribe_audio transcirbes audio file using whisper and returns the transcript. 
 def transcribe_audio(file_path):
     try:
+        print("t2")
         model = whisper.load_model("large")
-        lang = 'ko'
-        result = model.transcribe(file_path, language=lang, temperature=0.0)
+        result = model.transcribe(file_path, language=language, temperature=0.0)
         transcript = result['text']
         print(transcript)
         return transcript
@@ -72,8 +98,11 @@ def transcribe_audio(file_path):
         raise Exception(f"Error in transcribing audio: {str(e)}")
 
 
+
 recorder, frames, is_recording = None, [], False
 
+
+## start_recording enables user audio recording until stopped. 
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def start_recording(request):
@@ -110,16 +139,11 @@ def start_recording(request):
 
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-        finally:
-            # Stop and close the stream
-            if stream.is_active():
-                stream.stop_stream()
-                stream.close()
-
     else:
         return JsonResponse({'message': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
+
+## clean_up_audio removes the recorded audio file from it's path.
 def clean_up_audio(file_path):
     try:
         if os.path.exists(file_path):
@@ -130,6 +154,8 @@ def clean_up_audio(file_path):
     except Exception as e:
         print(f"Error cleaning up audio file: {str(e)}")
 
+
+## stop_recording stops the user audio recording and calls clean_up_audio.
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def stop_recording(request):
@@ -147,7 +173,7 @@ def stop_recording(request):
 
             clean_up_audio(file_path)
 
-            return JsonResponse({'message': 'Recording stopped', 'transcript': transcript}, status=status.HTTP_200_OK)
+            return JsonResponse({'transcript': transcript}, status=status.HTTP_200_OK)
 
         except Exception as e:
             print(f"Error stopping recording: {str(e)}")
@@ -155,6 +181,8 @@ def stop_recording(request):
     else:
         return JsonResponse({'message': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
+
+## save_audio_to_wav saves audio as .wav
 def save_audio_to_wav(frames):
     try:
         # Combine captured frames into audio data
@@ -177,3 +205,57 @@ def save_audio_to_wav(frames):
 
     except Exception as e:
         print(f"Error saving audio to WAV file: {str(e)}")
+        
+        
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def file_upload(request):
+    if request.method == 'POST':
+        try:
+            # Save the audio data to a WAV file
+            file_path = save_audio_to_wav(frames)
+
+            # Transcribe the audio
+            transcript = transcribe_audio(file_path)
+
+            clean_up_audio(file_path)
+
+            return JsonResponse({'message': 'Recording stopped', 'transcript': transcript}, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            print(f"Error stopping recording: {str(e)}")
+            return JsonResponse({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return JsonResponse({'message': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
+# Assuming UPLOAD_FOLDER is the directory where you want to save the files
+UPLOAD_FOLDER = '/Users/kyujincho/lang_ko/backend/uploaded_audio/'
+
+class AudioUploadView(APIView):
+    parser_classes = [MultiPartParser,]
+
+    def post(self, request):
+        file_obj = request.FILES.get('audioFile')
+
+        if not file_obj:
+            return JsonResponse({'error': 'No file provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            # Ensure the upload folder exists
+            UPLOAD_FOLDER = '/Users/kyujincho/lang_ko/backend/uploaded_audio/'
+            os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+            # Save the file to the specified folder
+            file_path = os.path.join(UPLOAD_FOLDER, file_obj.name)
+            with open(file_path, 'wb') as destination:
+                for chunk in file_obj.chunks():
+                    destination.write(chunk)
+            transcript = transcribe_audio(file_path)
+            
+            clean_up_audio(file_path)
+
+            return JsonResponse({'transcript': transcript}, status=status.HTTP_200_OK)
+        
+        except Exception as e:
+            return JsonResponse({'error': f"Error saving file: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
