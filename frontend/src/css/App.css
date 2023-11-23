@@ -110,40 +110,89 @@
   transition: 0.3s;
 }
 
-.whisper-container {
+
+
+/* Login.css */
+
+body {
+  font-family: 'Quicksand', sans-serif;
+}
+
+.login-container {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  padding: 20px;
-}
-
-.language-section {
-  align-self: flex-end;
-  margin-bottom: 10px;
-}
-
-.file-upload-section {
-  align-self: flex-end;
-  display: flex;
-  flex-direction: row;
   align-items: center;
-  margin-bottom: 10px;
+  justify-content: center;
+  height: 100vh;
 }
 
-.file-upload-section label {
-  margin-right: 10px;
+.login-form {
+  font-family: 'Quicksand', sans-serif;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 80px;
 }
 
-.recording-section {
-  align-self: flex-start;
-  margin-bottom: 10px;
-}
-
-.transcript-section {
+.error-message {
+  color: red;
   margin-top: 10px;
 }
 
-.logout-section {
-  align-self: flex-start;
-  margin-top: 10px;
+label {
+  display: block;
+  margin-bottom: 8px;
 }
+
+input {
+  font-family: 'Quicksand', sans-serif;
+  width: 93%;
+  padding: 8px;
+  margin-bottom: 5px;
+}
+
+button {
+  font-family: 'Quicksand', sans-serif;
+  background-color: #3498db;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.4s ease;
+}
+
+button:hover {
+  background-color: #2e86de;
+}
+
+.home-container {
+  text-align: center;
+  padding: 70px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  justify-content: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  margin: auto;
+  margin-top: 200px;
+}
+
+.home-link {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 10px 20px;
+  font-size: 16px;
+  text-decoration: none;
+  color: #ffffff;
+  background-color: #3498db;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.home-link:hover {
+  background-color: #2e86de;
+}
+

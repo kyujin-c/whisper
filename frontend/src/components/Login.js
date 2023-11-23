@@ -1,5 +1,3 @@
-// Login.js
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -18,7 +16,8 @@ const Login = () => {
     setPassword(event.target.value);
   };
 
-  const handleLogin = () => {
+  const handleLogin = (event) => {
+    event.preventDefault(); // Prevent the default form submission behavior
     const requestData = {
       username: username,
       password: password,
@@ -33,18 +32,18 @@ const Login = () => {
           navigate("/whisper");
         } else {
           // If login fails, set an error message
-          alert("Incorrect username or password");
+          setErrorMessage("사용자명과 비밀번호가 일치하지 않습니다.");
         }
       })
       .catch((error) => {
-        console.error("Login error:", error);
+        setErrorMessage("Failed to connect to the server. Please try again.");
       });
   };
 
   return (
-    <div>
-      <h2>Login Page</h2>
-      <form>
+    <div className="login-container">
+      <h2>로그인</h2>
+      <form className="login-form" onSubmit={handleLogin}>
         <label>
           Username:
           <input type="text" value={username} onChange={handleUsernameChange} />
@@ -59,14 +58,13 @@ const Login = () => {
           />
         </label>
         <br />
-        <button type="button" onClick={handleLogin}>
-          Login
-        </button>
-        <p> 계정이 없으신가요?</p>
-        <a href="/register"> 회원가입하기</a>
+        <button type="submit">로그인</button>
+        <p className="signup-text">
+          계정이 없으신가요? <a href="/register">회원가입하기</a>
+        </p>
 
         {/* Display error message if login fails */}
-        {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
       </form>
     </div>
   );

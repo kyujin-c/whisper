@@ -28,7 +28,7 @@ def api_login(request):
             login(request, user)
             return JsonResponse({'success': True}, status=200)
         else:
-            return JsonResponse({'success': False}, status=401)
+            return JsonResponse({'success': False}, status=200)
     else:
         return HttpResponse(status=405)  # Method Not Allowed
 
@@ -88,7 +88,6 @@ def update_language(request):
 ## transcribe_audio transcirbes audio file using whisper and returns the transcript. 
 def transcribe_audio(file_path):
     try:
-        print("t2")
         model = whisper.load_model("large")
         result = model.transcribe(file_path, language=language, temperature=0.0)
         transcript = result['text']

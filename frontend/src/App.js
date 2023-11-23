@@ -6,8 +6,8 @@ import Home from './components/Home';
 import Login from './components/Login';
 import Register from './components/Register';
 import Whisper from './components/Whisper';
-import './App.css';
-
+import './css/App.css';
+import './css/whisper.css';
 const App = () => {
   return (
     <Router>

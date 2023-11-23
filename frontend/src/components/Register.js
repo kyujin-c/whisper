@@ -53,7 +53,7 @@ const RegistrationForm = () => {
         }
         if (errors.username) {
           console.log(errors.username);
-          setModalMessage("이미 사용중인 계정 이름입니다.");
+          setModalMessage("이미 사용중인 사용자명입니다.");
           setShowModal(true);
         }
 
@@ -115,8 +115,8 @@ const RegistrationForm = () => {
             {isUsernameUnique !== null && (
               <span>
                 {isUsernameUnique
-                  ? "사용 가능한 계정 이름입니다."
-                  : "이미 사용 중인 계정 이름입니다."}
+                  ? "사용 가능한 사용자명입니다."
+                  : "이미 사용 중인 사용자명입니다."}
               </span>
             )}
           </div>
