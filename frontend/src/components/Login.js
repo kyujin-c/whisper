@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const Login = () => {
+const Login = ({ onLogin, isAuthenticated }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -29,6 +29,8 @@ const Login = () => {
         console.log(response.data);
         if (response.data.success) {
           // If login is successful, navigate to the Whisper page
+          onLogin();
+          isAuthenticated = true;
           navigate("/whisper");
         } else {
           // If login fails, set an error message

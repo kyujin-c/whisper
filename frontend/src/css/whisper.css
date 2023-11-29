@@ -4,43 +4,43 @@
     padding: 20px;
   }
   
-  .title{
+  .whisper-title{
     margin-left: 40px;
   }
 
-  .bottom-left {
+  .whisper-bottom-left {
     margin-left: 40px;
   }
   
-  .transcript-line {
+  .whisper-transcript-line {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-  .transcript-line p{
+  .whisper-transcript-line p{
     margin: 0;
 
   }
 
-  .language-section {
+  .whisper-language-section {
     display: flex;
     margin-right: 47px;
   }
-  .language-section select {
+  .whisper-language-section select {
     margin-left: 5px;
     width: 80px;
     height: 20px;
 
   }
   
-  .file-upload-section {
+  .whisper-file-upload-section {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-bottom: 10px;
   }
   
-  .upload-area {
+  .whisper-upload-area {
     border: 2px dashed #aaa;
 
     border-radius: 10px;
@@ -50,75 +50,81 @@
     cursor: pointer;
   }
 
-  .upload-top{
+  .whisper-upload-top{
     height: 5rem;
     display: flex;
     align-items: flex-end;
   }
 
-  .bottom-left-top {
+  .whisper-bottom-left-top {
     height: 5rem;
   }
 
-  .upload-top button {
+  .whisper-file-upload-button {
     width: 80px;
     height: 40px;
     margin-bottom: 10px;
-    margin-left: 150px;
+    margin-left: 5px;
   }
 
-  .upload-top label {
+  .whisper-file-choose-button {
+    width: 100px;
+    height: 40px;
+    margin-bottom: 10px;
+    margin-left: 310px;
+  }
+
+
+  .whisper-upload-top label {
     width: 133px;
   }
 
-  .upload-top input {
-    width: 250px;
-    height: 15px;
-  }
-  
-  .upload-area p {
+  .whisper-upload-area p {
     display: flex;
     margin-top: 180px;
     justify-content: center;
     height: 100%;
   }
   
-  .dragging .upload-area {
+  .whisper-dragging .upload-area {
     background-color: #f0f8ff; /* Change the background color when dragging */
     border-color: #4682b4; /* Change the border color when dragging */
   }
   
-  .file-upload-section label {
+  .whisper-file-upload-section label {
     margin-right: 10px;
   }
   
-  .recording-section {
+  .whisper-recording-section {
     margin-bottom: 10px;
   }
   
-  .start-recording {
+  .whisper-start-recording {
     margin-right: 5px;
   }
   
   
-  .transcript-box {
+  .whisper-transcript-box {
     border: 1.5px solid #d2cece;
     border-radius: 10px;
     width: 40rem;
     height: 25rem;
   }
   
-  .logout-section {
+  .whisper-logout-section {
     align-self: flex-start;
     margin-top: 10px;
   }
   
-  .top{
+  .whisper-top{
     height: 10rem;
   }
-  .top,
-  .bottom{
+  .whisper-top,
+  .whisper-bottom{
     display: grid;
     grid-template-columns: 1fr 1fr;
   }
 
+  .whisper-compare{
+    margin-top: 10px;
+  }

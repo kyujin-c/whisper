@@ -8,7 +8,8 @@ from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser
 from django.http import HttpResponse, JsonResponse
 from rest_framework.exceptions import ValidationError
-from .models import CustomUser
+from .models import CustomUser, Script
+import random
 import whisper
 import pyaudio
 import numpy as np
@@ -88,6 +89,7 @@ def update_language(request):
 ## transcribe_audio transcirbes audio file using whisper and returns the transcript. 
 def transcribe_audio(file_path):
     try:
+        print("transcribing")
         model = whisper.load_model("large")
         result = model.transcribe(file_path, language=language, temperature=0.0)
         transcript = result['text']
@@ -186,6 +188,7 @@ def save_audio_to_wav(frames):
     try:
         # Combine captured frames into audio data
         audio_data = np.concatenate(frames)
+        print("saving audio")
         
         # Create the audio folder if it doesn't exist
         os.makedirs(AUDIO_FOLDER, exist_ok=True)
@@ -204,29 +207,6 @@ def save_audio_to_wav(frames):
 
     except Exception as e:
         print(f"Error saving audio to WAV file: {str(e)}")
-        
-        
-@api_view(['POST'])
-@permission_classes([AllowAny])
-def file_upload(request):
-    if request.method == 'POST':
-        try:
-            # Save the audio data to a WAV file
-            file_path = save_audio_to_wav(frames)
-
-            # Transcribe the audio
-            transcript = transcribe_audio(file_path)
-
-            clean_up_audio(file_path)
-
-            return JsonResponse({'message': 'Recording stopped', 'transcript': transcript}, status=status.HTTP_200_OK)
-
-        except Exception as e:
-            print(f"Error stopping recording: {str(e)}")
-            return JsonResponse({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    else:
-        return JsonResponse({'message': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-
 
 # Assuming UPLOAD_FOLDER is the directory where you want to save the files
 UPLOAD_FOLDER = '/Users/kyujincho/lang_ko/backend/uploaded_audio/'
@@ -235,6 +215,7 @@ class AudioUploadView(APIView):
     parser_classes = [MultiPartParser,]
 
     def post(self, request):
+        print("saving audio file")
         file_obj = request.FILES.get('audioFile')
 
         if not file_obj:
@@ -258,3 +239,10 @@ class AudioUploadView(APIView):
         
         except Exception as e:
             return JsonResponse({'error': f"Error saving file: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def get_random_script(request):
+    script = random.choice(Script.objects.all()).text
+    return JsonResponse({'script': script}, status=status.HTTP_200_OK)

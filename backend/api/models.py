@@ -10,3 +10,7 @@ class CustomUser(AbstractUser):
 
     class Meta:
         permissions = []
+        
+
+class Script(models.Model):
+    text = models.TextField()

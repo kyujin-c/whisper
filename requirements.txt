@@ -1,0 +1,15 @@
+pip install rest_framework
+pip install corsheaders
+pip install whisper
+
+## for mac users
+brew install portaudio
+pip install pyaudio
+
+pip install numpy
+pip install wave
+pip install random
+
+npm install axios
+npm install react-router-dom
+npm install diff
