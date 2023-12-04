@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const Login = ({ onLogin, isAuthenticated }) => {
+const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -17,7 +17,8 @@ const Login = ({ onLogin, isAuthenticated }) => {
   };
 
   const handleLogin = (event) => {
-    event.preventDefault(); // Prevent the default form submission behavior
+    event.preventDefault();
+
     const requestData = {
       username: username,
       password: password,
@@ -28,9 +29,8 @@ const Login = ({ onLogin, isAuthenticated }) => {
       .then((response) => {
         console.log(response.data);
         if (response.data.success) {
-          // If login is successful, navigate to the Whisper page
-          onLogin();
-          isAuthenticated = true;
+          // If login is successful, set isAuthenticated and navigate
+          localStorage.setItem("isAuthenticated", "true");
           navigate("/whisper");
         } else {
           // If login fails, set an error message
@@ -60,7 +60,9 @@ const Login = ({ onLogin, isAuthenticated }) => {
           />
         </label>
         <br />
-        <button type="submit">로그인</button>
+        <div className="login-button">
+          <button type="submit">로그인</button>
+        </div>
         <p className="signup-text">
           계정이 없으신가요? <a href="/register">회원가입하기</a>
         </p>

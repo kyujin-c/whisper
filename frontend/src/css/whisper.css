@@ -1,130 +1,171 @@
 .whisper-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5%;
+  height: 1000px;
+}
+
+.whisper-top,
+.whisper-bottom,
+.whisper-recording-section,
+.whisper-logout-section {
+  width: 100%;
+}
+
+.whisper-top {
+  height: auto;
+  padding: 1rem;
+  text-align: center;
+}
+
+.whisper-bottom {
+  height: 350px;
+}
+
+.whisper-compare-link {
+  color: #4682b4;
+}
+
+.whisper-compare-link:hover {
+  color: rgb(17, 76, 226);
+}
+
+.whisper-recording-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.whisper-transcript-line,
+.whisper-language-section {
+  display: flex;
+  justify-content: space-between;
+}
+
+.whisper-language-section select {
+  width: 80px;
+  height: 20px;
+  margin: 16px 0px;
+  margin-left: 3px;
+}
+
+.whisper-transcript-box,
+.whisper-upload-area {
+  border: 1.5px solid #d2cece;
+  border-radius: 10px;
+  width: 100%;
+  height: 100px;
+}
+
+.whisper-upload-area {
+  border: 2px dashed #aaa;
+  cursor: pointer;
+  text-align: center;
+}
+
+.whisper-upload-buttons {
+  display: flex;
+  justify-content: right;
+  height: 37px;
+  margin: 8px 0px;
+}
+
+.whisper-file-upload-button {
+  margin-left: 5px;
+}
+
+.whisper-upload-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  margin-top: 2rem;
+}
+
+@media (min-width: 768px) {
+  .whisper-container {
+    padding: 3%;
+    height: 100%;
+  }
+
+  .whisper-bottom,
+  .whisper-recording-section,
+  .whisper-logout-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+  }
+
+  .whisper-top {
+    height: 10rem;
+    padding: 0;
+    text-align: left;
+  }
+
+  .whisper-bottom {
+    height: 25rem;
+  }
+
+  .whisper-recording-section {
+    margin-top: 0;
+  }
+
+  .whisper-recording-buttons {
     display: flex;
-    flex-direction: column;
-    padding: 20px;
-  }
-  
-  .whisper-title{
-    margin-left: 40px;
+    justify-content: left;
   }
 
-  .whisper-bottom-left {
-    margin-left: 40px;
-  }
-  
-  .whisper-transcript-line {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .whisper-transcript-line p{
-    margin: 0;
-
-  }
-
-  .whisper-language-section {
-    display: flex;
-    margin-right: 47px;
-  }
-  .whisper-language-section select {
-    margin-left: 5px;
-    width: 80px;
-    height: 20px;
-
-  }
-  
   .whisper-file-upload-section {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-bottom: 10px;
   }
-  
+
   .whisper-upload-area {
-    border: 2px dashed #aaa;
-
-    border-radius: 10px;
-    height: 25rem;
-    width: 40rem;
-    text-align: center;
-    cursor: pointer;
+    height: 87%;
   }
 
-  .whisper-upload-top{
-    height: 5rem;
-    display: flex;
-    align-items: flex-end;
-  }
-
-  .whisper-bottom-left-top {
-    height: 5rem;
+  .whisper-upload-buttons {
+    margin: 5px 0px;
   }
 
   .whisper-file-upload-button {
     width: 80px;
-    height: 40px;
-    margin-bottom: 10px;
-    margin-left: 5px;
   }
 
   .whisper-file-choose-button {
     width: 100px;
-    height: 40px;
-    margin-bottom: 10px;
-    margin-left: 310px;
   }
 
+  .whisper-upload-top {
+    margin: 0;
+  }
 
   .whisper-upload-top label {
-    width: 133px;
+    width: 60%;
   }
 
-  .whisper-upload-area p {
-    display: flex;
-    margin-top: 180px;
-    justify-content: center;
-    height: 100%;
-  }
-  
   .whisper-dragging .upload-area {
-    background-color: #f0f8ff; /* Change the background color when dragging */
-    border-color: #4682b4; /* Change the border color when dragging */
+    background-color: #f0f8ff;
+    border-color: #4682b4;
   }
-  
-  .whisper-file-upload-section label {
-    margin-right: 10px;
-  }
-  
-  .whisper-recording-section {
-    margin-bottom: 10px;
-  }
-  
+
   .whisper-start-recording {
     margin-right: 5px;
   }
-  
-  
-  .whisper-transcript-box {
-    border: 1.5px solid #d2cece;
-    border-radius: 10px;
-    width: 40rem;
-    height: 25rem;
-  }
-  
-  .whisper-logout-section {
-    align-self: flex-start;
-    margin-top: 10px;
-  }
-  
-  .whisper-top{
-    height: 10rem;
-  }
-  .whisper-top,
-  .whisper-bottom{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+
+  .whisper-transcript-box,
+  .whisper-upload-area {
+    height: 87%;
   }
 
-  .whisper-compare{
-    margin-top: 10px;
+  .whisper-logout-section {
+    width: 100%;
+    margin-top: 1rem;
   }
+
+  .whisper-logout-section button {
+    width: 75px;
+    height: 40px;
+  }
+}

@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { diffChars } from "diff";
 
-const Compare = ({ isAuthenticated }) => {
+const Compare = () => {
   const navigate = useNavigate();
   const [transcript, setTranscript] = useState("");
   const [script, setScript] = useState("");
@@ -13,10 +13,10 @@ const Compare = ({ isAuthenticated }) => {
 
   useEffect(() => {
     // If not authenticated, redirect to the login page
-    if (!isAuthenticated) {
+    if (!localStorage.getItem("isAuthenticated")) {
       navigate("/login");
     }
-  }, [navigate, isAuthenticated]);
+  }, [navigate]);
 
   useEffect(() => {
     getScript();
@@ -58,7 +58,7 @@ const Compare = ({ isAuthenticated }) => {
       .post("http://127.0.0.1:8000/logout/")
       .then((response) => {
         console.log(response.data);
-        isAuthenticated = false;
+        localStorage.clear();
         navigate("/");
       })
       .catch((error) => {
@@ -130,52 +130,54 @@ const Compare = ({ isAuthenticated }) => {
         </div>
         <div />
       </div>
+      <div className="recording-section">
+        <div className="recording-buttons">
+          <button className="start-recording" onClick={startRecording}>
+            Start Recording
+          </button>
+          <button className="start-recording" onClick={stopRecording}>
+            Stop Recording
+          </button>
+          <button
+            className="compare"
+            onClick={() => {
+              handleCompare();
+              highlightDifferences();
+            }}
+          >
+            Compare Text
+          </button>
+        </div>
+      </div>
 
       <div className="bottom">
         <div className="bottom-left">
-          <div className="bottom-left-top">
-            <div className="recording-section">
-              <button className="start-recording" onClick={startRecording}>
-                Start Recording
-              </button>
-              <button className="start-recording" onClick={stopRecording}>
-                Stop Recording
-              </button>
-              <button className="compare" onClick={handleCompare}>
-                Compare Text
-              </button>
-            </div>
-
-            <div className="transcript-line">
-              <p>Script:</p>
-              <div className="language-section">
-                <label>Select Language:</label>
-                <select
-                  value={selectedLanguage}
-                  onChange={handleLanguageChange}
-                >
-                  <option value="ko">한국어</option>
-                  <option value="en">English</option>
-                </select>
-              </div>
+          <div className="bottom-left-top"></div>
+          <div className="transcript-line">
+            <p>Script:</p>
+            <div className="language-section">
+              <p>Select Language:</p>
+              <select value={selectedLanguage} onChange={handleLanguageChange}>
+                <option value="ko">한국어</option>
+                <option value="en">English</option>
+              </select>
             </div>
           </div>
           <div className="transcript-box">{script}</div>
-          <p>Transcript:</p>
+          <p className="transcript-title"> Transcript:</p>
           <div className="transcript-box">{transcript}</div>
-          <div className="logout-section">
-            <button onClick={handleLogout}>Logout</button>
-          </div>
         </div>
         <div className="bottom-right">
           <div className="botton-right-top">
             <p className="score">Score: {comparisonScore}</p>
-            <button className="highlight-button" onClick={highlightDifferences}>
-              Check
-            </button>
           </div>
           <div className="highlight-box">{highlight}</div>
         </div>
+      </div>
+      <div className="logout-section">
+        <button className="logoutButton" onClick={handleLogout}>
+          Logout
+        </button>
       </div>
     </div>
   );

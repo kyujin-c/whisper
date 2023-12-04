@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const Whisper = ({ isAuthenticated }) => {
+const Whisper = () => {
   const navigate = useNavigate();
   const [transcript, setTranscript] = useState("");
   const [selectedLanguage, setSelectedLanguage] = useState("ko");
@@ -12,10 +12,12 @@ const Whisper = ({ isAuthenticated }) => {
 
   useEffect(() => {
     // If not authenticated, redirect to the login page
-    if (!isAuthenticated) {
+    console.log("localStorageget");
+    console.log(localStorage.getItem("isAuthenticated"));
+    if (!localStorage.getItem("isAuthenticated")) {
       navigate("/login");
     }
-  }, [navigate, isAuthenticated]);
+  }, [navigate]);
 
   useEffect(() => {
     // Handle language update when the component mounts
@@ -80,7 +82,7 @@ const Whisper = ({ isAuthenticated }) => {
       .post("http://127.0.0.1:8000/logout/")
       .then((response) => {
         console.log(response.data);
-        isAuthenticated = false;
+        localStorage.clear();
         navigate("/");
       })
       .catch((error) => {
@@ -101,7 +103,9 @@ const Whisper = ({ isAuthenticated }) => {
     try {
       setTranscript("Audio is being transcribed...");
 
-      const response = await axios.post("http://127.0.0.1:8000/stop_recording/");
+      const response = await axios.post(
+        "http://127.0.0.1:8000/stop_recording/"
+      );
       setTranscript(response.data.transcript);
     } catch (error) {
       console.error("Error stopping recording:", error);
@@ -121,11 +125,15 @@ const Whisper = ({ isAuthenticated }) => {
       const formData = new FormData();
       formData.append("audioFile", audioFile, audioFile.name);
 
-      const response = await axios.post("http://127.0.0.1:8000/upload_audio/", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axios.post(
+        "http://127.0.0.1:8000/upload_audio/",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       setTranscript(response.data.transcript);
       console.log(response.data); // Handle the response as needed
     } catch (error) {
@@ -146,41 +154,39 @@ const Whisper = ({ isAuthenticated }) => {
             STT 모델을 체험해 보세요. 직접 음성을 녹음하거나 음성 파일을 업로드
             해주세요.
           </p>
+          <p className="signup-text">
+            모델을 평가해 보세요.{" "}
+            <a className="whisper-compare-link" href="/compare">
+              모델 평가하기
+            </a>
+          </p>
         </div>
       </div>
 
+      <div className="whisper-recording-section">
+        <div className="whisper-recording-buttons">
+          <button className="whisper-start-recording" onClick={startRecording}>
+            Start Recording
+          </button>
+          <button className="whisper-stop-recording" onClick={stopRecording}>
+            Stop Recording
+          </button>
+        </div>
+      </div>
       <div className="whisper-bottom">
         <div className="whisper-bottom-left">
-          <div className="whisper-bottom-left-top">
-            <div className="whisper-recording-section">
-              <button className="whisper-start-recording" onClick={startRecording}>
-                Start Recording
-              </button>
-              <button className="whisper-stop-recording" onClick={stopRecording}>
-                Stop Recording
-              </button>
-            </div>
-
-            <div className="whisper-transcript-line">
-              <p>Transcript:</p>
-              <div className="whisper-language-section">
-                <label>Select Language:</label>
-                <select
-                  value={selectedLanguage}
-                  onChange={handleLanguageChange}
-                >
-                  <option value="ko">한국어</option>
-                  <option value="en">English</option>
-                </select>
-              </div>
+          <div className="whisper-transcript-line">
+            <p>Transcript:</p>
+            <div className="whisper-language-section">
+              <p>Select Language:</p>
+              <select value={selectedLanguage} onChange={handleLanguageChange}>
+                <option value="ko">한국어</option>
+                <option value="en">English</option>
+              </select>
             </div>
           </div>
 
           <div className="whisper-transcript-box">{transcript}</div>
-
-          <div className="whisper-logout-section">
-            <button onClick={handleLogout}>Logout</button>
-          </div>
         </div>
 
         <div
@@ -191,7 +197,7 @@ const Whisper = ({ isAuthenticated }) => {
           onDrop={handleDrop}
         >
           <div className="whisper-upload-top">
-            <label>Upload Audio File:</label>
+            <p>Upload Audio File:</p>
             <input
               type="file"
               accept="audio/*"
@@ -199,12 +205,20 @@ const Whisper = ({ isAuthenticated }) => {
               style={{ display: "none" }}
               id="fileInput" // Add this line
             />
-            <button className="whisper-file-choose-button"
-              onClick={() => document.getElementById("fileInput").click()}
-            >
-              Choose File
-            </button>
-            <button className="whisper-file-upload-button" onClick={uploadAudioFile}>Upload</button>
+            <div className="whisper-upload-buttons">
+              <button
+                className="whisper-file-choose-button"
+                onClick={() => document.getElementById("fileInput").click()}
+              >
+                Choose File
+              </button>
+              <button
+                className="whisper-file-upload-button"
+                onClick={uploadAudioFile}
+              >
+                Upload
+              </button>
+            </div>
           </div>
 
           <div className="whisper-upload-area">
@@ -218,8 +232,10 @@ const Whisper = ({ isAuthenticated }) => {
               </p>
             )}
           </div>
-          <button className="whisper-compare" onClick={handleCompare}>compare</button>
         </div>
+      </div>
+      <div className="whisper-logout-section">
+        <button onClick={handleLogout}>Logout</button>
       </div>
     </div>
   );

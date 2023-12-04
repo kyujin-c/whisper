@@ -178,7 +178,7 @@ const RegistrationForm = () => {
           <div className="form-item">
             <label></label>
             <div className="submit-btn-space">
-              <button type="submit" className="submit-btn">
+              <button type="submit">
                 Register
               </button>
             </div>

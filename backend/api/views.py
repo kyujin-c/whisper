@@ -37,8 +37,9 @@ def api_login(request):
 ## api_logout allows user to logout from the application.
 @api_view(['POST'])
 def api_logout(request):
-    logout(request)
-    return Response({'message': 'Logout successful'}, status=status.HTTP_200_OK)
+    # logout(request)
+    
+    return Response({'message': 'Logout successful', 'success': False}, status=status.HTTP_200_OK)
 
 ## api_register allows user to register to the application.
 @api_view(['POST', 'GET'])

@@ -1,0 +1,39 @@
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  
+  .login-form {
+    font-family: 'Quicksand', sans-serif;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 80px;
+  }
+  
+  .error-message {
+    color: red;
+    margin-top: 10px;
+  }
+
+  .signup-text a {
+    color: #4682b4;
+  }
+
+  .signup-text a:hover {
+    color: rgb(17, 76, 226);
+  }
+
+  .login-button {
+    display: flex;
+    justify-content: center;
+  }
+
+  .login-button button {
+    width: 100%;
+  }

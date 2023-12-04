@@ -97,17 +97,9 @@
   color: white;
   transition: 0.3s;
 }
+
 .check-user-btn{
   margin-left: 10px;
-  border: solid 1px #FFCE52;
-  color: #FFCE52;
-  padding: 0.3rem 1rem;
-  border-radius: 10px;
-}
-.check-user-btn:hover{
-  background-color: #FFCE52;
-  color: white;
-  transition: 0.3s;
 }
 
 
@@ -116,29 +108,6 @@
 
 body {
   font-family: 'Quicksand', sans-serif;
-}
-
-.login-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-}
-
-.login-form {
-  font-family: 'Quicksand', sans-serif;
-  border: 1px solid #ccc;
-  padding: 20px;
-  border-radius: 10px;
-  width: 300px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 80px;
-}
-
-.error-message {
-  color: red;
-  margin-top: 10px;
 }
 
 label {

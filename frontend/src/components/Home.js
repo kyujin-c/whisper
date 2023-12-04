@@ -1,7 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
+
 const Home = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // If not authenticated, redirect to the login page
+    console.log("localStorageget");
+    console.log(localStorage.getItem("isAuthenticated"));
+    if (localStorage.getItem("isAuthenticated")) {
+      navigate("/whisper");
+    }
+  }, [navigate]);
+
   return (
     <div className="home-container">
       <h2>음성 인식(STT) 체험하기</h2>

@@ -13,3 +13,7 @@ pip install random
 npm install axios
 npm install react-router-dom
 npm install diff
+
+
+## Some requirements may be missing. 
+## Please read the error messages and install suggested packages to run the application. 
