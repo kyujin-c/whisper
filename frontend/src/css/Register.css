@@ -1,0 +1,52 @@
+/* Common styles for the main container */
+.register-main {
+	height:90vh;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+}
+/* Styles for the form container */
+ .form-css {
+	display:flex;
+	flex-direction:column;
+	justify-content:center;
+	gap:1rem;
+}
+/* Styles for form inputs */
+ .form-css input {
+	width:80%;
+	justify-self:center;
+	margin-top:6px;
+}
+/* Styles for form labels */
+ .form-css label {
+	justify-self:right;
+}
+/* Styles for form items using grid */
+ .form-item {
+	display:grid;
+	grid-template-columns:1.8fr 1fr 1.8fr;
+	align-items:center;
+	justify-content:center;
+}
+/* Styles for form item labels */
+ .form-item label {
+	width:auto;
+	text-align:right;
+	margin-right:5px;
+}
+/* Styles for informational spans in form items */
+ .form-item span {
+	font-size:12px;
+	color:gray;
+	margin:0 10px;
+}
+/* Styles for check user button */
+ .check-user-btn {
+	width:130px;
+}
+/* Styles for register button */
+ .register-btn {
+	justify-self:center;
+    width: 90%;
+}
