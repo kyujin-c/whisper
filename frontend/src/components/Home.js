@@ -8,8 +8,6 @@ const Home = () => {
 
   useEffect(() => {
     // If not authenticated, redirect to the login page
-    console.log("localStorageget");
-    console.log(localStorage.getItem("isAuthenticated"));
     if (localStorage.getItem("isAuthenticated")) {
       navigate("/whisper");
     }

@@ -9,6 +9,7 @@ import "./css/App.css";
 import "./css/whisper.css";
 import "./css/compare.css";
 import "./css/Login.css";
+import "./css/Register.css";
 
 const App = () => {
   return (

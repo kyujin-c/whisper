@@ -141,9 +141,6 @@ const Whisper = () => {
     }
   };
 
-  const handleCompare = () => {
-    navigate("/compare");
-  };
 
   return (
     <div className="whisper-container">

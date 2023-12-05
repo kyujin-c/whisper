@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser
 from django.http import HttpResponse, JsonResponse
 from rest_framework.exceptions import ValidationError
-from .models import CustomUser, Script
+from .models import CustomUser, KorScript, EngScript
 import random
 import whisper
 import pyaudio
@@ -71,7 +71,7 @@ def check_unique_username(request):
 AUDIO_FOLDER = '/Users/kyujincho/lang_ko/backend/recorded_audio/'
 file_path = '/Users/kyujincho/lang_ko/backend/recorded_audio/'
 
-language = 'ko'
+language = ""
 
 ## update_language updates the language that whisper will be using for transcription. 
 @api_view(['POST'])
@@ -245,5 +245,9 @@ class AudioUploadView(APIView):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def get_random_script(request):
-    script = random.choice(Script.objects.all()).text
-    return JsonResponse({'script': script}, status=status.HTTP_200_OK)
+    if language == 'ko':
+        script = random.choice(KorScript.objects.all()).text
+        return JsonResponse({'script': script, 'lang': language}, status=status.HTTP_200_OK)
+    elif language == 'en':
+        script = random.choice(EngScript.objects.all()).text
+        return JsonResponse({'script': script, 'lang': language}, status=status.HTTP_200_OK)

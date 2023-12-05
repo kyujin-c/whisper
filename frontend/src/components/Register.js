@@ -25,43 +25,53 @@ const RegistrationForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (
+      formData.username === "" ||
+      formData.email === "" ||
+      formData.password === "" ||
+      formData.firstname === "" ||
+      formData.lastname === "" ||
+      formData.language === ""
+    ) {
+      console.log("모든 정보를 입력하세요.");
+      setModalMessage("모든 정보를 입력하세요.");
+      setShowModal(true);
+    } else {
+      try {
+        await axios.post("http://127.0.0.1:8000/register/", formData);
 
-    try {
-      await axios.post(
-        "http://127.0.0.1:8000/register/",
-        formData
-      );
+        // Handle successful registration (redirect, show success message, etc.)
+        //console.log(response.data);
+        navigate("/");
+      } catch (error) {
+        // Handle validation errors
 
-      // Handle successful registration (redirect, show success message, etc.)
-      //console.log(response.data);
-      navigate("/");
-    } catch (error) {
-      // Handle validation errors
-      if (error.response && error.response.status === 400) {
-        const errors = error.response.data.errors;
-        if (errors.password) {
-          console.log(errors.password);
-          setModalMessage(
-            "숫자, 영문, 특수시호(!, & 등)를 조합한 여덟 자리 이상의 비밀번호를 입력하세요."
-          );
-          setShowModal(true);
-        }
-        if (errors.email) {
-          console.log(errors.email);
-          setModalMessage("이미 사용중인 이메일 주소입니다.");
-          setShowModal(true);
-        }
-        if (errors.username) {
-          console.log(errors.username);
-          setModalMessage("이미 사용중인 사용자명입니다.");
-          setShowModal(true);
-        }
+        if (error.response && error.response.status === 400) {
+          const errors = error.response.data.errors;
+          if (errors.password) {
+            console.log(errors.password);
+            setModalMessage(
+              "숫자, 영문, 특수시호(!, & 등)를 조합한 여덟 자리 이상의 비밀번호를 입력하세요."
+            );
+            setShowModal(true);
+          }
+          if (errors.email) {
+            console.log(errors.email);
+            setModalMessage("이미 사용중인 이메일 주소입니다.");
+            setShowModal(true);
+          }
+          if (errors.username) {
+            console.log(errors.username);
+            setModalMessage("이미 사용중인 사용자명입니다.");
+            setShowModal(true);
+          }
 
-        // Display an alert or handle errors in your preferred way
-        //alert(`Validation error: ${JSON.stringify(errors)}`);
-      } else {
-        // Handle other errors (network, server, etc.)
-        console.error("Registration failed:", error.message);
+          // Display an alert or handle errors in your preferred way
+          //alert(`Validation error: ${JSON.stringify(errors)}`);
+        } else {
+          // Handle other errors (network, server, etc.)
+          console.error("Registration failed:", error.message);
+        }
       }
     }
   };
@@ -70,12 +80,11 @@ const RegistrationForm = () => {
     setShowModal(false);
   };
 
-  const [isUsernameUnique, setIsUsernameUnique] = useState(null);
-  const [usernameError, setUsernameError] = useState(null);
 
   const checkUsernameUnique = async () => {
     if (!formData.username) {
-      setUsernameError("Username is required");
+      setModalMessage("사용자명을 입력해주세요.");
+      setShowModal(true);
       return;
     }
 
@@ -83,8 +92,12 @@ const RegistrationForm = () => {
       const response = await axios.get(
         `http://127.0.0.1:8000/check_unique_username/?username=${formData.username}`
       );
-      setIsUsernameUnique(response.data.is_unique);
-      setUsernameError(null); // Clear any previous error
+      if(response.data.is_unique) {
+        setModalMessage("사용 가능한 사용자명입니다.");
+      } else {
+        setModalMessage("이미 사용중인 사용자명입니다.");
+      }
+      setShowModal(true);
     } catch (error) {
       console.error("Error checking username uniqueness:", error.message);
     }
@@ -111,14 +124,6 @@ const RegistrationForm = () => {
             >
               Check Username
             </button>
-            {usernameError && <span>{usernameError}</span>}
-            {isUsernameUnique !== null && (
-              <span>
-                {isUsernameUnique
-                  ? "사용 가능한 사용자명입니다."
-                  : "이미 사용 중인 사용자명입니다."}
-              </span>
-            )}
           </div>
 
           <div className="form-item">
@@ -174,14 +179,9 @@ const RegistrationForm = () => {
               onChange={handleInputChange}
             />
           </div>
-
           <div className="form-item">
             <label></label>
-            <div className="submit-btn-space">
-              <button type="submit">
-                Register
-              </button>
-            </div>
+            <button className="register-btn" type="submit">Register</button>
           </div>
         </form>
 

@@ -12,5 +12,9 @@ class CustomUser(AbstractUser):
         permissions = []
         
 
-class Script(models.Model):
+class KorScript(models.Model):
+    text = models.TextField()
+    
+    
+class EngScript(models.Model):
     text = models.TextField()

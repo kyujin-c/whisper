@@ -13,10 +13,19 @@ class CustomUserSerializer(serializers.ModelSerializer):
     )
 
     def validate_password(self, value):
+        # Use Django's built-in password validation
         try:
             validate_password(value)
         except DjangoValidationError as e:
             raise serializers.ValidationError(str(e))
+
+        # Additional checks for numbers and special characters
+        if not any(char.isdigit() for char in value):
+            raise serializers.ValidationError("Password must contain at least one digit.")
+
+        if not any(char in "!@#$%^&*()-_=+[]{}|;:'\",.<>?/" for char in value):
+            raise serializers.ValidationError("Password must contain at least one special character.")
+
         return value
 
     def create(self, validated_data):

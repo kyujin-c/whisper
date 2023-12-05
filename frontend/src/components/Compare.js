@@ -7,7 +7,9 @@ const Compare = () => {
   const navigate = useNavigate();
   const [transcript, setTranscript] = useState("");
   const [script, setScript] = useState("");
-  const [selectedLanguage, setSelectedLanguage] = useState("ko");
+  const [selectedLanguage, setSelectedLanguage] = useState(
+    localStorage.getItem("selectedLanguage") || "ko"
+  );
   const [comparisonScore, setComparisonScore] = useState("");
   const [highlight, setHighlight] = useState([]);
 
@@ -16,11 +18,29 @@ const Compare = () => {
     if (!localStorage.getItem("isAuthenticated")) {
       navigate("/login");
     }
+
+    const handlePopstate = () => {
+      // Clear selectedLanguage from localStorage when the user clicks the back button
+      localStorage.removeItem("selectedLanguage");
+    };
+
+    // Attach the event listener for the popstate event
+    window.addEventListener("popstate", handlePopstate);
+
+    // Cleanup function to remove the event listener when leaving the page
+    return () => {
+      window.removeEventListener("popstate", handlePopstate);
+    };
   }, [navigate]);
 
   useEffect(() => {
     getScript();
     sendLanguageToBackend(selectedLanguage);
+  }, [selectedLanguage]);
+
+  // Save selectedLanguage to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("selectedLanguage", selectedLanguage);
   }, [selectedLanguage]);
 
   const handleLanguageChange = async (event) => {
@@ -48,6 +68,7 @@ const Compare = () => {
         "http://127.0.0.1:8000/check_accuracy/"
       );
       setScript(response.data.script);
+      console.log("set language is:", response.data.lang);
     } catch (error) {
       console.error("Error getting script:", error);
     }
@@ -93,12 +114,18 @@ const Compare = () => {
   const handleCompare = () => {
     const differences = diffChars(script, transcript);
 
-    const correctChars = differences.filter(
-      (part) => !part.added && !part.removed
-    );
+    // Extract strings from differences that are added or removed
+    const correctChars = differences
+      .filter((part) => !part.added && !part.removed)
+      .map((part) => part.value.trim("")); // Ignore whitespace here
+
+    // Calculate the total length of the different characters
+    const totalLength = correctChars.reduce((acc, str) => acc + str.length, 0);
+
     const totalChars = script.length;
-    const accuracyPercentage =
-      ((totalChars - correctChars.length) / totalChars) * 100;
+
+    // Calculate the comparison score
+    const accuracyPercentage = (totalLength / totalChars) * 100;
 
     setComparisonScore(accuracyPercentage.toFixed(2));
   };
@@ -158,8 +185,12 @@ const Compare = () => {
             <div className="language-section">
               <p>Select Language:</p>
               <select value={selectedLanguage} onChange={handleLanguageChange}>
-                <option value="ko">한국어</option>
-                <option value="en">English</option>
+                <option value="ko">
+                  한국어
+                </option>
+                <option value="en">
+                  English
+                </option>
               </select>
             </div>
           </div>
