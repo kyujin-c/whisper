@@ -11,16 +11,12 @@ Interactive User Interface: A simple UI for users to easily interact with the mo
 
 ### Accuracy Calculation
 
-The accuracy of the Whisper-generated transcript is calculated as follows:
+The accuracy of the Whisper-generated transcript is calculated using the formula:
 
-**Formula**:
-
-\[
+$$
 \text{Accuracy Percentage} = \left( \frac{\text{Correct Characters}}{\text{Total Characters in Script}} \right) \times 100
-\]
+$$
 
 Where:
 - **Correct Characters**: The number of matching characters between the original script and the generated transcript.
 - **Total Characters in Script**: The total number of characters in the original input text.
-
-The accuracy is represented as a percentage of correct characters relative to the total characters in the original script.
