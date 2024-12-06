@@ -1,10 +1,14 @@
 pip install rest_framework
 pip install corsheaders
-pip install whisper
+pip install -U openai-whisper
+
 
 ## for mac users
 brew install portaudio
 pip install pyaudio
+
+brew install ffmpeg
+
 
 pip install numpy
 pip install wave

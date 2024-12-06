@@ -15,6 +15,9 @@ import pyaudio
 import numpy as np
 import os
 import wave
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 ## api_login checks it the credentials posted from frontend matches any credentials in database and authorizes use login.
 @api_view(['POST'])
@@ -68,8 +71,8 @@ def check_unique_username(request):
     is_unique = not CustomUser.objects.filter(username=username).exists()
     return JsonResponse({'is_unique': is_unique})
 
-AUDIO_FOLDER = '/Users/kyujincho/lang_ko/backend/recorded_audio/'
-file_path = '/Users/kyujincho/lang_ko/backend/recorded_audio/'
+AUDIO_FOLDER = os.path.join(BASE_DIR, 'recorded_audio/')
+file_path = AUDIO_FOLDER
 
 language = ""
 
@@ -91,7 +94,7 @@ def update_language(request):
 def transcribe_audio(file_path):
     try:
         print("transcribing")
-        model = whisper.load_model("large")
+        model = whisper.load_model("base")
         result = model.transcribe(file_path, language=language, temperature=0.0)
         transcript = result['text']
         print(transcript)
@@ -210,7 +213,7 @@ def save_audio_to_wav(frames):
         print(f"Error saving audio to WAV file: {str(e)}")
 
 # Assuming UPLOAD_FOLDER is the directory where you want to save the files
-UPLOAD_FOLDER = '/Users/kyujincho/lang_ko/backend/uploaded_audio/'
+UPLOAD_FOLDER = os.path.join(BASE_DIR, '/uploaded_audio/')
 
 class AudioUploadView(APIView):
     parser_classes = [MultiPartParser,]
@@ -224,7 +227,7 @@ class AudioUploadView(APIView):
 
         try:
             # Ensure the upload folder exists
-            UPLOAD_FOLDER = '/Users/kyujincho/lang_ko/backend/uploaded_audio/'
+            UPLOAD_FOLDER = os.path.join(BASE_DIR, '/uploaded_audio/')
             os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
             # Save the file to the specified folder
